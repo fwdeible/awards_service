@@ -84,7 +84,7 @@ public class ImageFormatter {
             }
 
         }
-        return createCombinedSortedImage(imageList.toArray(new BufferedImage[imageList.size()]));
+        return createCombinedImage(imageList.toArray(new BufferedImage[imageList.size()]));
 
     }
 
@@ -104,7 +104,7 @@ public class ImageFormatter {
 
     public static BufferedImage createCombinedImage(BufferedImage... bufferedImages) {
 
-        // TODO Verify sorting before calling this method
+        //TODO Verify sorting before calling this method
 
         final int totalImageCount = bufferedImages.length;
 
