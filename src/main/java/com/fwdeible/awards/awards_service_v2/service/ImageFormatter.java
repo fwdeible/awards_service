@@ -67,37 +67,13 @@ public class ImageFormatter {
         return imageInByte;
     }
 
-    public String getCombinedBase64Image(List objects) {
-        BufferedImage combinedImage = createCombinedImage(objects);
-        return getBase64Image(combinedImage);
-    }
-
-    public String getBase64Image(BufferedImage image) {
-
-        try {
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);
-            String base64Image = Base64.getEncoder().encodeToString(baos.toByteArray());
-
-            return base64Image;
-        }catch(IOException e) {
-            log.error("exception converting image byte array to base64", e);
-            return null;
-        }
-    }
-
     @SuppressWarnings("rawtypes")
     public  BufferedImage createCombinedImage(List objects) {
 
         List<BufferedImage> imageList = new ArrayList<BufferedImage>();
         for (Object o : objects) {
             byte[] imgBytes;
-            if (o instanceof Award) {
-                log.debug("TODO"); //TODO
-//                imgBytes = ((Award) o).getRibbonImage();
-//                imageList.add(getBufferedImage(imgBytes));
-            } else if (o instanceof byte[]) {
+            if (o instanceof byte[]) {
                 imgBytes = (byte[]) o;
                 imageList.add(getBufferedImage(imgBytes));
             } else if (o instanceof Long ) {
@@ -108,23 +84,13 @@ public class ImageFormatter {
             }
 
         }
-        return createCombinedImage(imageList.toArray(new BufferedImage[imageList.size()]));
+        return createCombinedSortedImage(imageList.toArray(new BufferedImage[imageList.size()]));
 
     }
 
     public  BufferedImage getAwardImageById(Long id) {
 
         log.debug("getAwardimageById: {}", id);
-//        try {
-//            switch(id) {
-//                case 1:
-//                    return LocalImageLoader.loadImage("army_service_ribbon.png");
-//                case 2:
-//                    return LocalImageLoader.loadImage("air_force_cross.png");
-//            }
-//        } catch(Exception e) {
-//            log.error("Error loading image", e);
-//        }
 
         return imageLoader.loadImage(id);
 
@@ -137,6 +103,8 @@ public class ImageFormatter {
     }
 
     public static BufferedImage createCombinedImage(BufferedImage... bufferedImages) {
+
+        // TODO Verify sorting before calling this method
 
         final int totalImageCount = bufferedImages.length;
 
@@ -221,7 +189,6 @@ public class ImageFormatter {
 
         return newImage;
 
-//        return getByteArray(newImage);
     }
 
 
