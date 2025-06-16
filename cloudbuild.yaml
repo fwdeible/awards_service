@@ -1,3 +1,6 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 steps:
   # Build the JAR
   - name: 'gcr.io/cloud-builders/mvn'
@@ -7,7 +10,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/awards-service', '.']
 
-  # Push the image to Container Registry (or Artifact Registry if you prefer)
+  # Push the image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/awards-service']
 
