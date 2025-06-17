@@ -5,8 +5,12 @@ A Spring Boot backend for generating military ribbon sets based on user-selected
 
 ---
 
-UI: https://awards-service.web.app/
+## UI: https://awards-service.web.app/
 
+---
+
+## TODO
+- I'm still pulling together the image sets, so while everything works the generated image is not going to be correct (yet)
 ---
 
 ## 📌 Features
