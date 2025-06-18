@@ -21,7 +21,11 @@ steps:
       [
         'run', 'deploy', 'awards-service',
         '--image', 'gcr.io/$PROJECT_ID/awards-service',
+<<<<<<< HEAD
         '--region', 'us-east5',
+=======
+        '--region', 'us-east1',
+>>>>>>> 44ab26b2fc8b23f684c2bb153d8229fac5337b54
         '--platform', 'managed',
         '--allow-unauthenticated'
       ]
