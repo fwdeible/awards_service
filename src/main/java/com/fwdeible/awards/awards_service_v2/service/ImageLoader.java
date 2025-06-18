@@ -27,14 +27,22 @@ public class ImageLoader {
 
         }
         public  BufferedImage loadImage(String imageName)  {
-            log.debug("getImage: {}", imageName);
+
             try (InputStream is = ImageLoader.class.getResourceAsStream("/static/images/" + imageName)) {
-                if (is == null) {
-                    throw new IllegalArgumentException("Image not found: " + imageName);
+                if (is != null) {
+                    return ImageIO.read(is);
+                } else {
+                    log.warn("Image not found for " + imageName + ", falling back to placeholder.png");
+                    InputStream placeholder = ImageLoader.class.getResourceAsStream("/static/images/placeholder.png");
+                    if (placeholder != null) {
+                        return ImageIO.read(placeholder);
+                    } else {
+                        log.error("Placeholder image also not found.");
+                        throw new IllegalStateException("Placeholder image missing.");
+                    }
                 }
-                return ImageIO.read(is);
-            } catch(Exception e) {
-                log.error("error loading image", e);
+            } catch (Exception e) {
+                log.error("Error loading image: " + imageName, e);
                 return null;
             }
         }

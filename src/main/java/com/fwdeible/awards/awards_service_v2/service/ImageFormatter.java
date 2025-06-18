@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -68,24 +69,29 @@ public class ImageFormatter {
     }
 
     @SuppressWarnings("rawtypes")
-    public  BufferedImage createCombinedImage(List objects) {
+    public BufferedImage createCombinedImage(List<?> objects) {
+        List<BufferedImage> imageList = new ArrayList<>();
 
-        List<BufferedImage> imageList = new ArrayList<BufferedImage>();
+        List<Long> longIds = objects.stream()
+                .filter(o -> o instanceof Long)
+                .map(o -> (Long) o)
+                .sorted()
+                .collect(Collectors.toList());
+
+        for (Long id : longIds) {
+            imageList.add(getAwardImageById(id));
+        }
+
         for (Object o : objects) {
-            byte[] imgBytes;
             if (o instanceof byte[]) {
-                imgBytes = (byte[]) o;
-                imageList.add(getBufferedImage(imgBytes));
-            } else if (o instanceof Long ) {
-                imageList.add( getAwardImageById((Long)o));
-            } else {
-                log.error("createCombinedImage called with invalid object list");
+                imageList.add(getBufferedImage((byte[]) o));
+            } else if (!(o instanceof Long)) {
+                log.error("createCombinedImage called with invalid object type: " + o.getClass());
                 return null;
             }
-
         }
-        return createCombinedImage(imageList.toArray(new BufferedImage[imageList.size()]));
 
+        return createCombinedImage(imageList.toArray(new BufferedImage[0]));
     }
 
     public  BufferedImage getAwardImageById(Long id) {
